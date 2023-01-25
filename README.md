@@ -1,6 +1,6 @@
 # SpaceXpanse ID
 
-SpaceXpanse ID (*SpeXID*) is an application built on the SpaceXpanse Multiverse platform, that
+SpaceXpanse ID (**SpeXID**) is an application built on the SpaceXpanse Multiverse platform, that
 turns each SpaceXpanse name into a **secure digital identity** similar to
 [NameID](https://nameid.org/).
 
@@ -13,7 +13,7 @@ for end-to-end encryption.
 
 ## Overview
 
-From a high-level point of view, XID allows owners of SpaceXpanse names to
+From a high-level point of view, SpeXID allows owners of SpaceXpanse names to
 **associate metadata** to their names, that **everyone else can read**.
 Due to how SpaceXpanse works, **only the owners of names** are able to modify
 the data (through the keys in their wallets).  This ensures that the data
@@ -42,13 +42,13 @@ We also plan to support this in the future:
 
 More details can be found in specific documents:
 
-- [XID game](doc/game.md): Details about the game state and move format
-  for XID as game on the SpaceXpanse platform.
+- [SpeXID game](doc/game.md): Details about the game state and move format
+  for SpeXID as game on the SpaceXpanse platform.
 - [RPC interface](doc/rpc.md): The JSON format for game states and the RPC
-  interface of the XID daemon.
-- [REST interface](doc/rest.md): The simple REST API that the XID daemon can
+  interface of the SpeXID daemon.
+- [REST interface](doc/rest.md): The simple REST API that the SpeXID daemon can
   optionally expose.
-- [Light mode](doc/light.md): How XID can be run in a "light mode", which is
+- [Light mode](doc/light.md): How SpeXID can be run in a "light mode", which is
   just enough to support generating auth credentials and works without the
   need to run a local SpaceXpanse Core.
 - [Authentication](doc/auth.md): How the authentication protocol with a signer
