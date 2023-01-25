@@ -1,12 +1,12 @@
 # XID's RPC Interface
 
-This document describes the [JSON format](#json) of the XID state
+This document describes the [JSON format](#json) of the SpeXID state
 that is used in its RPC interface, as well as the available
 [RPC methods](#rpc) themselves.
 
 ## <a id="json">JSON Format of the Game State</a>
 
-For communication with the XID daemon, all data is encoded
+For communication with the SpeXID daemon, all data is encoded
 in the [JSON format](https://json.org/).
 
 ### <a id="json-one-name">Data for Names</a>
@@ -40,14 +40,14 @@ In particular, the `signers` field holds information about registered
 *Global signers* are given in a JSON object that has no `application` key.
 Application-specific signers are given in objects with the application specified
 as a string (which may be `""`).
-All `GLOBAL`n and `ADDR`n signer addresses are XAYA addresses encoded as
+All `GLOBAL`n and `ADDR`n signer addresses are SpaceXpanse addresses encoded as
 strings.
 
 The `addresses` field holds crypto addresses that the user has associated
 for other coins and tokens.  Each `CRYPTO`n is a string that identifies the
 coin/token (e.g. `btc`), with the `CRYPTOADDR`n being the corresponding address
 also as a string.  The individual keys and formats for addresses are not
-defined (or interpreted) further by XID itself.
+defined (or interpreted) further by SpeXID itself.
 
 For convenience, the name itself is repeated as `NAME` in the JSON state.
 
@@ -68,29 +68,29 @@ The **full game state** is a JSON object of the following format:
         }
     }
 
-The keys into `names` are the XAYA names for which non-trivial data is present.
+The keys into `names` are the SpaceXpanse names for which non-trivial data is present.
 The corresponding `DATA`n values are JSON objects with the
 [data for those names](#json-one-name).
 
 ## <a id="rpc">RPC Methods</a>
 
-When run, the XID daemon `xid` exposes a
+When run, the SpeXID daemon `xid` exposes a
 **[JSON-RPC 2.0](https://www.jsonrpc.org/)** interface
 over HTTP on a local port (the port number is specified in its invocation).
 
 All methods accept arguments in the **keyword-form**.
 
-### Standard Methods from `libxayagame`
+### Standard Methods from `libspex`
 
-Since XID is based on
-[`libxayagame`](https://github.com/xaya/libxayagame),
+Since SpeXID is based on
+[`libspex`](https://github.com/spacexpanse/libspex),
 it has the standard methods from its
-[`GameRpcServer`](https://github.com/xaya/libxayagame/blob/master/xayagame/gamerpcserver.hpp).
+[`GameRpcServer`](https://github.com/spacexpanse/libspex/blob/master/game/gamerpcserver.hpp).
 Those methods can be used for very basic operations.
 
 #### <a id="getnullstate">`getnullstate`</a>
 
-This method returns information about the current state of the XID process
+This method returns information about the current state of the SpeXID process
 itself:
 
     {
@@ -104,42 +104,42 @@ itself:
 Here, the placeholders have the following meanings:
 
 - **`CHAIN`** defines on which chain (`main`, `test` or `regtest`) the
-  XID daemon is running.
-- **`STATE`** is the current syncing state of the XID daemon.  It is typically
+  SpeXID daemon is running.
+- **`STATE`** is the current syncing state of the SpeXID daemon.  It is typically
   `catching-up` while the daemon is still syncing or `up-to-date` if it is
   synced to the latest block.
 - **`BLOCK`** is the block hash to which the current state corresponds.
 - **`HEIGHT`** is the block height of the current state.
 
-This is useful as the cheapest possible way to query the XID process
+This is useful as the cheapest possible way to query the SpeXID process
 about its health and state, without the need to extract any extra
 game-state data.
 
 #### <a id="getcurrentstate">`getcurrentstate`</a>
 
-This method returns general state information of XID similar to
+This method returns general state information of SpeXID similar to
 [`getnullstate`](#getnullstate), but also includes the
 [full state](#json-full) in an extra `gamestate` field.
 
 #### `waitforchange`
 
-This method blocks until the state of the XID daemon changes (typically because
+This method blocks until the state of the SpeXID daemon changes (typically because
 a new block has been processed).  It returns the *block hash* of the new best
 block as string.
 
 In exceptional situations, this method may also return JSON `null` instead,
-if no new best block is known.  This happens if the connected XAYA Core daemon
-does not even have blocks until the initial state of XID yet.
+if no new best block is known.  This happens if the connected SpaceXpanse Core daemon
+does not even have blocks until the initial state of SpeXID yet.
 
 #### `stop`
 
-This is a JSON-RPC *notification* and simply requests the XID daemon
+This is a JSON-RPC *notification* and simply requests the SpeXID daemon
 to shut down cleanly.
 
 ### Data Retrieval
 
 In addition to the generic [`getcurrentstate`](#getcurrentstate) method which
-returns the full game state, XID also exposes more specific methods for
+returns the full game state, SpeXID also exposes more specific methods for
 retrieving certain parts of the game state.  Where possible, these methods
 should be used, as they allow more efficient access to the required data.
 
@@ -152,7 +152,7 @@ of a JSON object otherwise like [`getnullstate`](#getnullstate).
 
 ### Authentication Credentials
 
-XID has special RPC methods supporting its use for
+SpeXID has special RPC methods supporting its use for
 [user authentication](auth.md).  They are able to construct credentials,
 sign them and verify whether or not given credentials are valid.
 
@@ -200,7 +200,7 @@ password (e.g. coming from [`getauthmessage`](#getauthmessage)).
 
 It expects two string arguments, `password` and `signature`.
 The signature should be the raw signature bytes encoded with base64,
-as they get returned by Xaya Core's signing RPC methods.
+as they get returned by SpaceXpanse Core's signing RPC methods.
 `setauthsignature` returns the amended password as string.
 
 #### `verifyauth`
@@ -251,7 +251,7 @@ values:
 #### `authwithwallet`
 
 This method constructs *and signs* authentication credentials using
-the wallet of the attached Xaya Core daemon.  To use it, XID has to
+the wallet of the attached SpaceXpanse Core daemon.  To use it, SpeXID has to
 be started with `--allow_wallet`.
 
 The `name`, `application` and `data` have to be passed as arguments.
