@@ -1,4 +1,4 @@
-# SpaceXpanse ID
+# SpaceXpanse ID /WIP/
 
 SpaceXpanse ID (**SpeXID**) is an application built on the SpaceXpanse Multiverse platform, that
 turns each SpaceXpanse name into a **secure digital identity** similar to
