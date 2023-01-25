@@ -1,24 +1,24 @@
 # Signer Authentication
 
-In this document, we describe the protocol for **authentication with a Xid
+In this document, we describe the protocol for **authentication with a SpeXID
 signer address** in detail.  This protocol enables users to prove that they
-control a signer key for some XAYA name, so that services that use Xid
+control a signer key for some SpaceXpanse name, so that services that use SpeXID
 for user authentication can allow them to log in or perform other actions
-on behalf of the XAYA name.
+on behalf of the SpaceXpanse name.
 
-The authentication protocol described here is implemented directly in Xid,
+The authentication protocol described here is implemented directly in SpeXID,
 which exposes [RPC methods](rpc.md) for verifying credentials and
 constructing them for keys the user owns.  This makes it very easy to
-support Xid authentication in third-party projects.  But if necessary,
+support SpeXID authentication in third-party projects.  But if necessary,
 external applications can of course also implement the authentication
 protocol on their own (e.g. if private keys are managed outside of
-a Xaya Core wallet).
+a SpaceXpanse Core wallet).
 
 ## Overview
 
-Authentication for Xid works through a **username** and a **password**.
+Authentication for SpeXID works through a **username** and a **password**.
 This makes it easy to fit into the typical workflow and existing
-applications.  The username is simply the XAYA name (without the `p/`
+applications.  The username is simply the SpaceXpanse name (without the `p/`
 namespace prefix).  The password is a [special data structure](#password) which
 contains some metadata and, mainly, a *message
 [signed](#signature) with one of the name's signer addresses*.
@@ -36,12 +36,12 @@ in [OpenSSL's
 **Base64**](https://www.openssl.org/docs/manmaster/man3/EVP_EncodeBlock.html)
 format (with all new lines / whitespace removed).
 In particular, it is an instance of the `AuthData` message as specified
-in [`auth.proto`](https://github.com/xaya/xid/blob/master/auth/auth.proto).
+in [`auth.proto`](https://github.com/spacexpanse/spexid/blob/dev/auth/auth.proto).
 
 The main content and only mandatory field in the protocol buffer is the
 signature of the authentication message in the `signature_bytes` field.
 This field holds the data corresponding to the signature returned by
-Xaya Core's `signmessage` command, with the Base64 string decoded into bytes.
+SpaceXpanse Core's `signmessage` command, with the Base64 string decoded into bytes.
 
 Other fields may be present as needed by a specific application; if they are,
 then they influence the
@@ -63,7 +63,7 @@ username, the application's name and the
 [data encoded in the password](#password).  It is a string of the following
 form:
 
-    Xid login
+    SpeXID login
     NAME
     at: APPLICATION
     expires: EXPIRY
@@ -74,9 +74,9 @@ form:
 
 The placeholders have the following meaning:
 
-- **`NAME`** is the XAYA name (encoded as UTF-8) for which authentication
+- **`NAME`** is the SpaceXpanse name (encoded as UTF-8) for which authentication
   is performed.  This matches the username of the authentication credentials.
-  Note that XAYA names are not allowed to contain new-line characters.
+  Note that SpaceXpanse names are not allowed to contain new-line characters.
 - **`APPLICATION`** is the name of the application for which the credentials
   are constructed.  It correponds to the string for which application-specific
   signer keys are assigned.  To be valid, the application name must only
@@ -97,7 +97,7 @@ if there are `n` key/value pairs of extra data.
 
 To prove control over a signer key associated to the username
 and application, the [authentication message](#auth-message) is
-**signed using Xaya Core's `signmessage` functionality** with one of the
+**signed using SpaceXpanse Core's `signmessage` functionality** with one of the
 signer addresses.  This corresponds to an ECDSA signature with the
 private key associated to the address, performed in a specific way and
 encoded in a particular format.
@@ -107,7 +107,7 @@ encoded in a particular format.
 To verify credentials given by a username and password for a specific
 application, these steps have to be performed:
 
-1. The username must be a valid XAYA name and the application name must
+1. The username must be a valid SpaceXpanse name and the application name must
    be valid (only alphanumeric characters, `.` and `/`).
 2. It must be possible to [decode the password](#password) into a
    protocol buffer instance.
@@ -118,7 +118,7 @@ application, these steps have to be performed:
 5. The authentication message must be [constructed](#auth-message) from the
    username, application name and password data.
 6. The `signature` given in the password must be a valid signature for
-   the constructed authentication message according to Xaya Core's
+   the constructed authentication message according to SpaceXpanse Core's
    `verifymessage`.
 7. The ECDSA public key
    [recovered from the signature](https://bitcoin.stackexchange.com/questions/60972/recovering-ecdsa-public-key-from-the-signature)
