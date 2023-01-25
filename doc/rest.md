@@ -1,9 +1,9 @@
-# XID's REST API
+# SpeXID's REST API
 
-In addition to the more standard [RPC interface](rpc.md), the XID daemon
+In addition to the more standard [RPC interface](rpc.md), the SpeXID daemon
 can also expose some data through a read-only
 [REST API](https://restfulapi.net/).  This allows e.g. setting up a public
-web server that allows querying the XID state.
+web server that allows querying the SpeXID state.
 
 To enable the REST API, the argument `--rest_port=PORT` should be passed to
 `xid` with a non-zero `PORT` value filled in.  This then starts a simple
@@ -16,7 +16,7 @@ proxy in front of `xid`'s REST port.**
 
 ## Server State
 
-XID exposes its internal state (e.g. what block it is synced to) through
+SpeXID exposes its internal state (e.g. what block it is synced to) through
 the API endpoing `/state`.  The result is simply a JSON value corresponding
 to the result of [`getcurrentstate`](rpc.md#getcurrentstate), excluding
 the `gamestate` field.
